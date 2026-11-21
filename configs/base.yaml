@@ -1,0 +1,74 @@
+experiment_name: w8a8_static_minmax
+seed: 42
+device: auto
+output_dir: outputs
+
+model:
+  name: simple_cnn
+  target: null
+  kwargs:
+    in_channels: 3
+    num_classes: 10
+  checkpoint: null
+  state_dict_key: null
+  strict_load: true
+
+data:
+  name: synthetic_image
+  target: null
+  kwargs:
+    image_size: 32
+    in_channels: 3
+    num_classes: 10
+    num_calib: 256
+    num_eval: 512
+  calib_batch_size: 32
+  eval_batch_size: 64
+  num_calib_batches: 8
+  num_workers: 0
+
+quantization:
+  fold_bn: true
+  quantize_types:
+    - Conv2d
+    - Linear
+  skip_layers: []
+  quantize_input: true
+  quantize_output: false
+  weight:
+    enabled: true
+    bit_width: 8
+    symmetric: true
+    signed: true
+    narrow_range: true
+    granularity: per_channel
+    group_size: 64
+    ch_axis: 0
+    observer: minmax
+    observer_kwargs: {}
+    dynamic: false
+    include_zero: true
+  activation:
+    enabled: true
+    bit_width: 8
+    symmetric: false
+    signed: false
+    narrow_range: false
+    granularity: per_tensor
+    group_size: 64
+    ch_axis: 0
+    observer: minmax
+    observer_kwargs: {}
+    dynamic: false
+    include_zero: true
+  layer_overrides: {}
+
+evaluation:
+  task: classification
+  max_eval_batches: null
+  run_layer_analysis: true
+  layer_analysis_batches: 4
+  run_sensitivity: false
+  sensitivity_max_batches: 8
+  generate_plots: true
+  export_artifacts: true

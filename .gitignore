@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Experiment outputs (keep placeholder)
+/outputs/*
+!/outputs/.gitkeep
+
+# Checkpoints (keep placeholder)
+/checkpoints/*
+!/checkpoints/.gitkeep
+
+# Data / datasets cache (root only, keep src/ptq_sim/data tracked)
+/data/
+*.tar.gz
+*.zip
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

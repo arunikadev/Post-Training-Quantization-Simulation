@@ -1,0 +1,79 @@
+experiment_name: w4a16_weight_only
+seed: 42
+device: auto
+output_dir: outputs
+
+model:
+  name: mini_transformer
+  target: null
+  kwargs:
+    vocab_size: 128
+    d_model: 64
+    n_heads: 4
+    num_layers: 2
+    d_ff: 128
+    num_classes: 4
+    max_seq_len: 32
+  checkpoint: null
+  state_dict_key: null
+  strict_load: true
+
+data:
+  name: synthetic_sequence
+  target: null
+  kwargs:
+    seq_len: 32
+    vocab_size: 128
+    num_classes: 4
+    num_calib: 256
+    num_eval: 512
+  calib_batch_size: 32
+  eval_batch_size: 64
+  num_calib_batches: 8
+  num_workers: 0
+
+quantization:
+  fold_bn: true
+  quantize_types:
+    - Conv2d
+    - Linear
+  skip_layers: []
+  quantize_input: false
+  quantize_output: false
+  weight:
+    enabled: true
+    bit_width: 4
+    symmetric: true
+    signed: true
+    narrow_range: true
+    granularity: per_group
+    group_size: 64
+    ch_axis: 0
+    observer: minmax
+    observer_kwargs: {}
+    dynamic: false
+    include_zero: true
+  activation:
+    enabled: false
+    bit_width: 16
+    symmetric: false
+    signed: false
+    narrow_range: false
+    granularity: per_tensor
+    group_size: 64
+    ch_axis: 0
+    observer: minmax
+    observer_kwargs: {}
+    dynamic: false
+    include_zero: true
+  layer_overrides: {}
+
+evaluation:
+  task: classification
+  max_eval_batches: null
+  run_layer_analysis: true
+  layer_analysis_batches: 4
+  run_sensitivity: false
+  sensitivity_max_batches: 8
+  generate_plots: true
+  export_artifacts: true

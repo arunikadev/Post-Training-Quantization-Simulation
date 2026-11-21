@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ptq-sim"
+version = "0.1.0"
+description = "Modular Post-Training Quantization (PTQ) Simulation Framework for PyTorch"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "torchvision>=0.15",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "PyYAML>=6.0",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "scipy>=1.10",
+    "tqdm>=4.65",
+    "rich>=13.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+ptq-run = "ptq_sim.cli:run_ptq_main"
+ptq-sweep = "ptq_sim.cli:run_sweep_main"

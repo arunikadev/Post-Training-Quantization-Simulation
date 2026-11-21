@@ -1,0 +1,81 @@
+base_config: configs/base.yaml
+sweep_name: bitwidth_calibrator_sweep
+output_dir: outputs
+
+scenarios:
+  - name: W8A8_MinMax
+    overrides:
+      quantization.weight.bit_width: 8
+      quantization.weight.granularity: per_channel
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 8
+      quantization.activation.observer: minmax
+
+  - name: W8A8_KL
+    overrides:
+      quantization.weight.bit_width: 8
+      quantization.weight.granularity: per_channel
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 8
+      quantization.activation.observer: kl
+
+  - name: W8A8_Percentile999
+    overrides:
+      quantization.weight.bit_width: 8
+      quantization.weight.granularity: per_channel
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 8
+      quantization.activation.observer: percentile
+      quantization.activation.observer_kwargs:
+        percentile: 99.9
+
+  - name: W6A6_MinMax
+    overrides:
+      quantization.weight.bit_width: 6
+      quantization.weight.granularity: per_channel
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 6
+      quantization.activation.observer: minmax
+
+  - name: W4A8_PerChannel_MSE
+    overrides:
+      quantization.weight.bit_width: 4
+      quantization.weight.granularity: per_channel
+      quantization.weight.observer: mse
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 8
+      quantization.activation.observer: percentile
+      quantization.activation.observer_kwargs:
+        percentile: 99.9
+
+  - name: W4A8_PerGroup64
+    overrides:
+      quantization.weight.bit_width: 4
+      quantization.weight.granularity: per_group
+      quantization.weight.group_size: 64
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: true
+      quantization.activation.bit_width: 8
+      quantization.activation.observer: minmax
+
+  - name: W4_WeightOnly
+    overrides:
+      quantization.weight.bit_width: 4
+      quantization.weight.granularity: per_group
+      quantization.weight.group_size: 64
+      quantization.weight.observer: minmax
+      quantization.activation.enabled: false
+      quantization.quantize_input: false
+
+  - name: W3_WeightOnly
+    overrides:
+      quantization.weight.bit_width: 3
+      quantization.weight.granularity: per_group
+      quantization.weight.group_size: 64
+      quantization.weight.observer: mse
+      quantization.activation.enabled: false
+      quantization.quantize_input: false
